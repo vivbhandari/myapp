@@ -12,21 +12,18 @@ class ProviderTableViewController: UITableViewController {
     
     //MARK: Variables
     var providers = [Provider]()
+    var username = "user1"
+    var password = "password1"
+    var token: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.getProviders()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.loadAuthenticationToken(function: self.getProviders)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Table view data source
@@ -58,11 +55,40 @@ class ProviderTableViewController: UITableViewController {
         return cell
     }
     
-    private func getProviders() {
+    private func loadAuthenticationToken(function:@escaping (String)->Void) {
+        let config = URLSessionConfiguration.default // Session Configuration
+        let session = URLSession(configuration: config) // Load configuration into Session
+        let urlFormat = "http://localhost/myapp/authentication?username=%@&password=%@"
+        let url = URL(string: String(format: urlFormat, self.username, self.password) )!
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
+            (data, response, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: String]
+                    {
+                        print(json)
+                        self.token = json["token"]!
+                        function(self.token)
+                    }
+                } catch {
+                    print("error in JSONSerialization")
+                }
+            }
+        })
+        task.resume()
+    }
+
+    private func getProviders(token :String) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
         let url = URL(string: "http://localhost/myapp/myresource/providers")!
-        let task = session.dataTask(with: url, completionHandler: {
+        var urlRequest = URLRequest(url: url)
+        urlRequest.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) in
             if error != nil {
                 print(error!.localizedDescription)
@@ -86,44 +112,7 @@ class ProviderTableViewController: UITableViewController {
         task.resume()
     }
     
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
     // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         super.prepare(for: segue, sender: sender)
