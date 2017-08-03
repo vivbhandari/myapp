@@ -9,6 +9,14 @@
 import UIKit
 
 class ProviderTableViewController: UITableViewController {
+
+    //MARK: Properties
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
+
+    //MARK: Actions
+    @IBAction func refreshAction(_ sender: UIBarButtonItem) {
+        self.getProviders(token: token)
+    }
     
     //MARK: Variables
     var providers = [Provider]()
@@ -68,11 +76,16 @@ class ProviderTableViewController: UITableViewController {
                 print(error!.localizedDescription)
             } else {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: String]
-                    {
-                        print(json)
-                        self.token = json["token"]!
-                        function(self.token)
+                    let httpResponse = response as! HTTPURLResponse
+                    print("statusCode=" + String(httpResponse.statusCode))
+                    if(httpResponse.statusCode == 201) {
+                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: String]
+                        {
+                            print(json)
+                            self.token = json["access_token"]!
+                            function(self.token)
+                        }} else{
+                        self.showAlert(message: "Authentication failed")
                     }
                 } catch {
                     print("error in JSONSerialization")
@@ -94,15 +107,26 @@ class ProviderTableViewController: UITableViewController {
                 print(error!.localizedDescription)
             } else {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
-                    {
-                        print(json)
-                        let jsonProviders = json["providers"] as? [[String: String]]
-                        for jsonProvider in jsonProviders!{
-                            let jsonProviderData = jsonProvider as [String: String]
-                            self.providers += [Provider(title: jsonProviderData["title"]!, address: jsonProviderData["address"]!)]
+                    let httpResponse = response as! HTTPURLResponse
+                    print("statusCode=" + String(httpResponse.statusCode))
+                    if(httpResponse.statusCode == 200) {
+                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
+                        {
+                            print(json)
+                            self.providers.removeAll()
+                            let jsonProviders = json["providers"] as? [[String: String]]
+                            for jsonProvider in jsonProviders!{
+                                let jsonProviderData = jsonProvider as [String: String]
+                                self.providers += [Provider(title: jsonProviderData["title"]!, address: jsonProviderData["address"]!)]
+                            }
+                            self.tableView.reloadData()
                         }
-                        self.tableView.reloadData()
+                    }
+                    else if(httpResponse.statusCode == 401) {
+                        self.showAlert(message: "Authentication failed")
+                    }
+                    else {
+                        self.showAlert(message: "Server error")
                     }
                 } catch {
                     print("error in JSONSerialization")
@@ -111,7 +135,13 @@ class ProviderTableViewController: UITableViewController {
         })
         task.resume()
     }
-    
+
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.

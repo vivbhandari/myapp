@@ -249,7 +249,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uCl-TT-o0I" id="gMT-Gw-qVO">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CjB-XP-Rr6">
@@ -286,16 +286,24 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="providers" id="Ggq-q8-ItW">
+                        <barButtonItem key="leftBarButtonItem" title="refresh" id="51M-Qp-lrP">
+                            <connections>
+                                <action selector="refreshAction:" destination="Y87-lB-UEz" id="kH0-Jw-oSu"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="map view" id="Uea-rK-IDM">
                             <connections>
                                 <segue destination="f9w-Gg-K7u" kind="presentation" id="GCe-Ha-5VM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="refreshButton" destination="51M-Qp-lrP" id="YWM-j9-Q2x"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EUh-S4-eVK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1800.8" y="868.51574212893559"/>
+            <point key="canvasLocation" x="1930" y="810"/>
         </scene>
         <!--Provider Map View Controller-->
         <scene sceneID="GDV-dV-Ds9">
