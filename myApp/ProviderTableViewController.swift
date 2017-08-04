@@ -23,6 +23,7 @@ class ProviderTableViewController: UITableViewController {
     var username = "user1"
     var password = "password1"
     var token: String = ""
+    var refreshToken: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,10 +80,44 @@ class ProviderTableViewController: UITableViewController {
                     let httpResponse = response as! HTTPURLResponse
                     print("statusCode=" + String(httpResponse.statusCode))
                     if(httpResponse.statusCode == 201) {
-                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: String]
+                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
                         {
                             print(json)
-                            self.token = json["access_token"]!
+                            self.token = json["access_token"]! as! String
+                            self.refreshToken = json["refresh_token"]! as! String
+                            function(self.token)
+                        }} else{
+                        self.showAlert(message: "Authentication failed")
+                    }
+                } catch {
+                    print("error in JSONSerialization")
+                }
+            }
+        })
+        task.resume()
+    }
+
+    private func refreshAuthenticationToken(function:@escaping (String)->Void) {
+        let config = URLSessionConfiguration.default // Session Configuration
+        let session = URLSession(configuration: config) // Load configuration into Session
+        let urlFormat = "http://localhost/myapp/authentication/refresh?username=%@&token=%@"
+        let url = URL(string: String(format: urlFormat, self.username, self.refreshToken) )!
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
+            (data, response, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                do {
+                    let httpResponse = response as! HTTPURLResponse
+                    print("statusCode=" + String(httpResponse.statusCode))
+                    if(httpResponse.statusCode == 201) {
+                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
+                        {
+                            print(json)
+                            self.token = json["access_token"]! as! String
+                            self.refreshToken = json["refresh_token"]! as! String
                             function(self.token)
                         }} else{
                         self.showAlert(message: "Authentication failed")
@@ -123,7 +158,8 @@ class ProviderTableViewController: UITableViewController {
                         }
                     }
                     else if(httpResponse.statusCode == 401) {
-                        self.showAlert(message: "Authentication failed")
+                        print("Authentication failed. Refresh token.")
+                        self.refreshAuthenticationToken(function: self.getProviders)
                     }
                     else {
                         self.showAlert(message: "Server error")
