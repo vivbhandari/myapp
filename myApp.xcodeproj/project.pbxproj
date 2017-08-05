@@ -18,6 +18,8 @@
 		C091258F1F26C3C000205AA5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C091258E1F26C3C000205AA5 /* RegisterViewController.swift */; };
 		C09125921F26D1B000205AA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09125901F26D1B000205AA5 /* Main.storyboard */; };
 		C09125941F281A5100205AA5 /* ProviderMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09125931F281A5100205AA5 /* ProviderMapViewController.swift */; };
+		C0C81BF41F3631E6005136DD /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C81BF31F3631E6005136DD /* Authorization.swift */; };
+		C0C81BF61F3646A4005136DD /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C81BF51F3646A4005136DD /* Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		C091258E1F26C3C000205AA5 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		C09125911F26D1B000205AA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C09125931F281A5100205AA5 /* ProviderMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderMapViewController.swift; sourceTree = "<group>"; };
+		C0C81BF31F3631E6005136DD /* Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
+		C0C81BF51F3646A4005136DD /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				C08BE31B1F2D71B3008409C7 /* Provider.swift */,
+				C0C81BF31F3631E6005136DD /* Authorization.swift */,
 				C09125901F26D1B000205AA5 /* Main.storyboard */,
 				C08BE3151F2D6C5F008409C7 /* ProviderTableViewCell.swift */,
 				C091256C1F2688B800205AA5 /* AppDelegate.swift */,
@@ -98,6 +103,7 @@
 				C091258E1F26C3C000205AA5 /* RegisterViewController.swift */,
 				C09125931F281A5100205AA5 /* ProviderMapViewController.swift */,
 				C08BE3171F2D6FD6008409C7 /* ProviderTableViewController.swift */,
+				C0C81BF51F3646A4005136DD /* Helper.swift */,
 			);
 			path = myApp;
 			sourceTree = "<group>";
@@ -219,7 +225,9 @@
 				C08BE31D1F2FFB33008409C7 /* Provider.swift in Sources */,
 				C091258F1F26C3C000205AA5 /* RegisterViewController.swift in Sources */,
 				C09125941F281A5100205AA5 /* ProviderMapViewController.swift in Sources */,
+				C0C81BF61F3646A4005136DD /* Helper.swift in Sources */,
 				C091256F1F2688B800205AA5 /* WelcomeViewController.swift in Sources */,
+				C0C81BF41F3631E6005136DD /* Authorization.swift in Sources */,
 				C091256D1F2688B800205AA5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,20 +15,17 @@ class ProviderTableViewController: UITableViewController {
 
     //MARK: Actions
     @IBAction func refreshAction(_ sender: UIBarButtonItem) {
-        self.getProviders(token: token)
+        self.getProviders()
     }
     
     //MARK: Variables
     var providers = [Provider]()
-    var username = "user1"
-    var password = "password1"
-    var token: String = ""
-    var refreshToken: String = ""
+    var authorization: Authorization? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.loadAuthenticationToken(function: self.getProviders)
+
+        self.getProviders()
     }
     
     override func didReceiveMemoryWarning() {
@@ -64,44 +61,11 @@ class ProviderTableViewController: UITableViewController {
         return cell
     }
     
-    private func loadAuthenticationToken(function:@escaping (String)->Void) {
-        let config = URLSessionConfiguration.default // Session Configuration
-        let session = URLSession(configuration: config) // Load configuration into Session
-        let urlFormat = "http://localhost/myapp/authentication?username=%@&password=%@"
-        let url = URL(string: String(format: urlFormat, self.username, self.password) )!
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
-            (data, response, error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                do {
-                    let httpResponse = response as! HTTPURLResponse
-                    print("statusCode=" + String(httpResponse.statusCode))
-                    if(httpResponse.statusCode == 201) {
-                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
-                        {
-                            print(json)
-                            self.token = json["access_token"]! as! String
-                            self.refreshToken = json["refresh_token"]! as! String
-                            function(self.token)
-                        }} else{
-                        self.showAlert(message: "Authentication failed")
-                    }
-                } catch {
-                    print("error in JSONSerialization")
-                }
-            }
-        })
-        task.resume()
-    }
-
-    private func refreshAuthenticationToken(function:@escaping (String)->Void) {
+    private func refreshAuthenticationToken(function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
         let urlFormat = "http://localhost/myapp/authentication/refresh?username=%@&token=%@"
-        let url = URL(string: String(format: urlFormat, self.username, self.refreshToken) )!
+        let url = URL(string: String(format: urlFormat, self.authorization!.username, self.authorization!.refresh_token) )!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
@@ -116,11 +80,13 @@ class ProviderTableViewController: UITableViewController {
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
                         {
                             print(json)
-                            self.token = json["access_token"]! as! String
-                            self.refreshToken = json["refresh_token"]! as! String
-                            function(self.token)
+                            self.authorization!.access_token = json["access_token"]! as! String
+                            self.authorization!.refresh_token = json["refresh_token"]! as! String
+                            self.authorization!.token_type = json["token_type"]! as! String
+                            self.authorization!.expires_in = json["expires_in"]! as! Int
+                            function()
                         }} else{
-                        self.showAlert(message: "Authentication failed")
+                        Helper.showAlert(message: "Authentication failed", parentController: self)
                     }
                 } catch {
                     print("error in JSONSerialization")
@@ -130,12 +96,12 @@ class ProviderTableViewController: UITableViewController {
         task.resume()
     }
 
-    private func getProviders(token :String) {
+    private func getProviders() {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
         let url = URL(string: "http://localhost/myapp/myresource/providers")!
         var urlRequest = URLRequest(url: url)
-        urlRequest.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        urlRequest.addValue("Bearer " + self.authorization!.access_token, forHTTPHeaderField: "Authorization")
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) in
             if error != nil {
@@ -162,7 +128,7 @@ class ProviderTableViewController: UITableViewController {
                         self.refreshAuthenticationToken(function: self.getProviders)
                     }
                     else {
-                        self.showAlert(message: "Server error")
+                        Helper.showAlert(message: "Server error", parentController: self)
                     }
                 } catch {
                     print("error in JSONSerialization")
@@ -170,12 +136,6 @@ class ProviderTableViewController: UITableViewController {
             }
         })
         task.resume()
-    }
-
-    func showAlert(message: String) {
-        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
 
     // MARK: - Navigation

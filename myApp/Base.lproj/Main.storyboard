@@ -59,7 +59,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cq3-gb-DrD">
                                         <rect key="frame" x="0.0" y="122" width="318" height="30"/>
@@ -68,8 +68,7 @@
                                         </constraints>
                                         <state key="normal" title="Sign in"/>
                                         <connections>
-                                            <action selector="signIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z9d-nr-Yz3"/>
-                                            <segue destination="urh-tR-51s" kind="presentation" id="QHH-Jw-GWX"/>
+                                            <action selector="signIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7sa-PO-rQ9"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mzs-Ck-3M6">
@@ -93,6 +92,7 @@
                     <navigationItem key="navigationItem" title="Welcome" id="og1-MW-eK6"/>
                     <connections>
                         <outlet property="passwordText" destination="k8m-j7-R9H" id="h5l-Eu-4Bf"/>
+                        <outlet property="signInButton" destination="cq3-gb-DrD" id="0Ho-ZX-ouH"/>
                         <outlet property="usernameText" destination="wRb-wq-pWU" id="ri1-Xw-WyD"/>
                     </connections>
                 </viewController>
@@ -239,7 +239,7 @@
         <!--providers-->
         <scene sceneID="qx2-fo-hWW">
             <objects>
-                <tableViewController id="Y87-lB-UEz" customClass="ProviderTableViewController" customModule="myApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="ProviderTableViewController" storyboardIdentifier="ProviderTableViewController" id="Y87-lB-UEz" customClass="ProviderTableViewController" customModule="myApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" sectionHeaderHeight="28" sectionFooterHeight="28" id="saR-Kk-Q5B">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -303,7 +303,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EUh-S4-eVK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1930" y="810"/>
+            <point key="canvasLocation" x="1916" y="869"/>
         </scene>
         <!--Provider Map View Controller-->
         <scene sceneID="GDV-dV-Ds9">
@@ -342,7 +342,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kde-9z-Izs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4296.8000000000002" y="868.51574212893559"/>
+            <point key="canvasLocation" x="3628" y="869"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="iY5-of-Mnx">
@@ -383,7 +383,7 @@
         <!--Navigation Controller-->
         <scene sceneID="nDI-4V-dop">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="urh-tR-51s" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="ProviderTableNavigationController" storyboardIdentifier="ProviderTableNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="urh-tR-51s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="m0k-hN-C4I">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -396,7 +396,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cC9-aQ-4qw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1076" y="869"/>
+            <point key="canvasLocation" x="1087" y="869"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="yrh-aU-RkX">
@@ -414,7 +414,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rtS-3o-Dmc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3357.5999999999999" y="868.51574212893559"/>
+            <point key="canvasLocation" x="2722" y="869"/>
         </scene>
     </scenes>
 </document>
