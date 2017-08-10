@@ -17,11 +17,12 @@ class ProviderTableViewController: UITableViewController {
     @IBAction func refreshAction(_ sender: UIBarButtonItem) {
         self.getProviders()
     }
-    
+
     //MARK: Variables
     var providers = [Provider]()
     var authorization: Authorization? = nil
-    
+    let defaultImage = UIImage(named: "default")
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -118,7 +119,12 @@ class ProviderTableViewController: UITableViewController {
                             let jsonProviders = json["providers"] as? [[String: String]]
                             for jsonProvider in jsonProviders!{
                                 let jsonProviderData = jsonProvider as [String: String]
-                                self.providers += [Provider(title: jsonProviderData["title"]!, address: jsonProviderData["address"]!)]
+                                var image = self.defaultImage
+                                if(jsonProviderData["image"] != nil){
+                                    let decodedData = Data(base64Encoded: jsonProviderData["image"]!, options: .ignoreUnknownCharacters)
+                                    image = UIImage(data: decodedData!)
+                                }
+                                self.providers += [Provider(title: jsonProviderData["title"]!, address: jsonProviderData["address"]!, photo: image)]
                             }
                             self.tableView.reloadData()
                         }

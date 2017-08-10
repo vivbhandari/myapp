@@ -12,7 +12,7 @@ import CoreLocation
 
 
 class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-    let crossHairs = UIImage(named: "crosshairs")
+    let defaultImage = UIImage(named: "default")
     let googleKey = "AIzaSyBG149OzbaQ-PNxy4pXxqQHamRrm1s5jw0"
     var providers = [Provider]()
     
@@ -21,9 +21,11 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         var identifier = "my location"
         var title: String?
         var coordinate: CLLocationCoordinate2D
-        init(name:String,lat:CLLocationDegrees,long:CLLocationDegrees){
+        var providerImage: UIImage?
+        init(name:String,lat:CLLocationDegrees,long:CLLocationDegrees, image: UIImage){
             title = name
             coordinate = CLLocationCoordinate2DMake(lat, long)
+            providerImage = image
         }
     }
     
@@ -34,9 +36,14 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
             dequeuedView.pinTintColor = UIColor.magenta
             view = dequeuedView
         }else { //make a new view
-            if annotation.title == "Home"{
+            if annotation.providerImage != defaultImage{
                 view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                view.image = crossHairs
+                let imageView = UIImageView(image: annotation.providerImage)
+                var r: CGRect = imageView.frame
+                r.size.height = 30
+                r.size.width = 30
+                imageView.frame = r;
+                view.addSubview(imageView)
             } else{
                 let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
                 pinView.pinTintColor = UIColor.magenta
@@ -96,7 +103,7 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
                                 provider.lat = lat
                                 provider.long = long
                                 provider.hasCoordinates = true
-                                self.mapView.addAnnotation(MyLocation(name:provider.title,lat:provider.lat, long:provider.long))
+                                self.mapView.addAnnotation(MyLocation(name:provider.title,lat:provider.lat, long:provider.long, image: provider.photo!))
                             }
                         } catch {
                             print("error in JSONSerialization")
@@ -105,7 +112,7 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
                 })
                 task.resume()
             } else {
-                self.mapView.addAnnotation(MyLocation(name:provider.title,lat:provider.lat,long:provider.long))
+                self.mapView.addAnnotation(MyLocation(name:provider.title,lat:provider.lat,long:provider.long, image: provider.photo!))
             }
         }
     }
