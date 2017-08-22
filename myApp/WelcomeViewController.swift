@@ -62,7 +62,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     private func loadAuthenticationToken(function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        let urlFormat = "http://localhost/myapp/authentication?username=%@&password=%@"
+        let urlFormat = "http://localhost/myapp/user/authentication?username=%@&password=%@"
         let username = self.authorization!.username.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
         let password = self.authorization!.password.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
         let url = URL(string: String(format: urlFormat, username, password) )!

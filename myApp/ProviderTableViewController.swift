@@ -65,7 +65,7 @@ class ProviderTableViewController: UITableViewController {
     private func refreshAuthenticationToken(function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        let urlFormat = "http://localhost/myapp/authentication/refresh?username=%@&token=%@"
+        let urlFormat = "http://localhost/myapp/user/authentication/refresh?username=%@&token=%@"
         let url = URL(string: String(format: urlFormat, self.authorization!.username, self.authorization!.refresh_token) )!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
@@ -116,6 +116,7 @@ class ProviderTableViewController: UITableViewController {
                         {
                             print(json)
                             self.providers.removeAll()
+                            var count = 0
                             let jsonProviders = json["providers"] as? [[String: String]]
                             for jsonProvider in jsonProviders!{
                                 let jsonProviderData = jsonProvider as [String: String]
@@ -125,7 +126,9 @@ class ProviderTableViewController: UITableViewController {
                                     image = UIImage(data: decodedData!)
                                 }
                                 self.providers += [Provider(title: jsonProviderData["title"]!, address: jsonProviderData["address"]!, photo: image)]
+                                count += 1
                             }
+                            print("total count=" + String(count))
                             self.tableView.reloadData()
                         }
                     }
