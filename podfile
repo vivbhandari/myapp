@@ -1,0 +1,5 @@
+target 'myApp' do
+  use_frameworks!
+  pod 'FacebookCore'
+  pod 'FacebookLogin'
+end

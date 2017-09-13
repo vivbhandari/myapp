@@ -52,5 +52,27 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allows you to add profile photo</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb1456646671092135</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>1456646671092135</string>
+    <key>FacebookDisplayName</key>
+    <string>myApp</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>To select display picture</string>
 </dict>
 </plist>

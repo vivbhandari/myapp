@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "myApp/AppDelegate.swift"
-            timestampString = "524982903.149487"
+            timestampString = "527035059.405443"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "14"
-            endingLineNumber = "14"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
             landmarkName = "AppDelegate"
             landmarkType = "3">
             <Locations>
