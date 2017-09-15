@@ -12,10 +12,13 @@ import CoreLocation
 
 
 class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+
+    //MARK: Variables
     let defaultImage = UIImage(named: "default")
     let googleKey = "AIzaSyBG149OzbaQ-PNxy4pXxqQHamRrm1s5jw0"
     var providers = [Provider]()
-    
+    var authorization: Authorization? = nil
+
     //MARK: Annotations
     class MyLocation: NSObject,MKAnnotation{
         var identifier = "my location"
@@ -28,7 +31,7 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
             providerImage = image
         }
     }
-    
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var view : MKAnnotationView
         guard let annotation = annotation as? MyLocation else {return nil}
@@ -54,22 +57,33 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
         view.canShowCallout = true
         return view
     }
-    
+
     //MARK: Properties
     @IBOutlet weak var mapView: MKMapView!
-    
+
     //MARK: Actions
     @IBAction func listView(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let button = UIButton.init(type: .custom)
+        var userImage = UIImage(named: "crosshairs")
+        if self.authorization?.image != nil {
+            userImage = self.authorization?.image
+        }
+        button.setImage(userImage, for: UIControlState.normal)
+        button.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
+        let barButton = UIBarButtonItem.init(customView: button)
+        self.navigationItem.leftBarButtonItem = barButton
+
         mapView.showsUserLocation = true
         mapView.delegate = self
         getGoogleCoordinates(providers: providers)
     }
-    
+
     func mapView(_ mapView: MKMapView, didUpdate
         userLocation: MKUserLocation) {
         mapView.centerCoordinate = userLocation.location!.coordinate
@@ -77,7 +91,7 @@ class ProviderMapViewController: UIViewController, MKMapViewDelegate, CLLocation
             userLocation.location!.coordinate, 3000, 3000)
         mapView.setRegion(region, animated: true)
     }
-    
+
     private func getGoogleCoordinates(providers: [Provider]) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session

@@ -27,41 +27,59 @@ class ProviderTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.getProviders()
+
+        let button = UIButton.init(type: .custom)
+
+        //set image for button
+        var userImage = UIImage(named: "crosshairs")
+        if self.authorization?.image != nil {
+            userImage = self.authorization?.image
+        }
+        button.setImage(userImage, for: UIControlState.normal)
+
+        //add function for button
+        //        button.addTarget(self, action: #selector(RatingControl.ratingButtonTapped(button:)), for: .touchUpInside)
+        //        button.addTarget(self, action: "fbButtonPressed", for: UIControlEvents.TouchUpInside)
+
+        button.frame = CGRect.init(x: 0, y: 0, width: 30, height: 30) //CGRectMake(0, 0, 30, 30)
+        let barButton = UIBarButtonItem.init(customView: button)
+        //assign button to navigationbar
+        self.navigationItem.leftBarButtonItem = barButton
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return providers.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "ProviderTableViewCell"
-        
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ProviderTableViewCell  else {
             fatalError("The dequeued cell is not an instance of ProviderTableViewCell.")
         }
-        
+
         // Fetches the appropriate meal for the data source layout.
         let provider = providers[indexPath.row]
-        
+
         // Configure the cell...
         cell.title.text = provider.title
         cell.address.text = provider.address
         cell.photo.image = provider.photo
-        
+
         return cell
     }
-    
+
     private func refreshAuthenticationToken(function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
@@ -85,6 +103,10 @@ class ProviderTableViewController: UITableViewController {
                             self.authorization!.refresh_token = json["refresh_token"]! as! String
                             self.authorization!.token_type = json["token_type"]! as! String
                             self.authorization!.expires_in = json["expires_in"]! as! Int
+                            if(json["image"] != nil){
+                                let decodedData = Data(base64Encoded: json["image"]! as! String , options: .ignoreUnknownCharacters)
+                                self.authorization!.image = UIImage(data: decodedData!)
+                            }
                             function()
                         }} else{
                         Helper.showAlert(message: "Authentication failed", parentController: self)
@@ -154,5 +176,6 @@ class ProviderTableViewController: UITableViewController {
         let destinationNavigationController = segue.destination as! UINavigationController
         let providerMapViewController = destinationNavigationController.topViewController as? ProviderMapViewController
         providerMapViewController?.providers = self.providers
+        providerMapViewController?.authorization = self.authorization
     }
 }

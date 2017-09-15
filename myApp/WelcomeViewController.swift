@@ -94,6 +94,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
                             self.authorization!.refresh_token = json["refresh_token"]! as! String
                             self.authorization!.token_type = json["token_type"]! as! String
                             self.authorization!.expires_in = json["expires_in"]! as! Int
+                            if(json["image"] != nil){
+                                let decodedData = Data(base64Encoded: json["image"]! as! String , options: .ignoreUnknownCharacters)
+                                self.authorization!.image = UIImage(data: decodedData!)
+                            }
                             function()
                         }} else{
                         Helper.showAlert(message: "Authentication failed", parentController: self)

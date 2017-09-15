@@ -51,6 +51,7 @@
 		C091258E1F26C3C000205AA5 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		C09125911F26D1B000205AA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C09125931F281A5100205AA5 /* ProviderMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderMapViewController.swift; sourceTree = "<group>"; };
+		C0B8D78C1F6B8194004A4D94 /* myApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = myApp.entitlements; sourceTree = "<group>"; };
 		C0C81BF31F3631E6005136DD /* Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		C0C81BF51F3646A4005136DD /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		FF4575548DF31EB375FCD1CD /* Pods-myApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-myApp/Pods-myApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 		C091256B1F2688B800205AA5 /* myApp */ = {
 			isa = PBXGroup;
 			children = (
+				C0B8D78C1F6B8194004A4D94 /* myApp.entitlements */,
 				C08BE31B1F2D71B3008409C7 /* Provider.swift */,
 				C0C81BF31F3631E6005136DD /* Authorization.swift */,
 				C09125901F26D1B000205AA5 /* Main.storyboard */,
@@ -194,7 +196,13 @@
 				TargetAttributes = {
 					C09125681F2688B800205AA5 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = D258Q97G3Q;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					C091257C1F2688B800205AA5 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -457,9 +465,11 @@
 			baseConfigurationReference = 5E961B2AD8D0EF3997FE00A4 /* Pods-myApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = myApp/myApp.entitlements;
+				DEVELOPMENT_TEAM = D258Q97G3Q;
 				INFOPLIST_FILE = myApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.myApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myProviderApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -470,9 +480,11 @@
 			baseConfigurationReference = FF4575548DF31EB375FCD1CD /* Pods-myApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = myApp/myApp.entitlements;
+				DEVELOPMENT_TEAM = D258Q97G3Q;
 				INFOPLIST_FILE = myApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.myApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myProviderApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

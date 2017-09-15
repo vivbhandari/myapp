@@ -17,7 +17,9 @@ class Authorization {
     var refresh_token: String = ""
     var token_type: String = ""
     var expires_in: Int = -1
-    
+    var image: UIImage?
+
+
     init(username: String, password: String) {
         self.username = username
         self.password = password

@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -280,7 +281,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uCl-TT-o0I" id="gMT-Gw-qVO">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CjB-XP-Rr6">
@@ -316,27 +317,34 @@
                             <outlet property="delegate" destination="Y87-lB-UEz" id="USF-s5-f2g"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem title="Item" id="VHm-ya-KgC"/>
+                        <barButtonItem title="Item" id="bsp-MP-hrk"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="providers" id="Ggq-q8-ItW">
-                        <barButtonItem key="leftBarButtonItem" title="refresh" id="51M-Qp-lrP">
-                            <connections>
-                                <action selector="refreshAction:" destination="Y87-lB-UEz" id="kH0-Jw-oSu"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="map view" id="Uea-rK-IDM">
-                            <connections>
-                                <segue destination="f9w-Gg-K7u" kind="presentation" id="GCe-Ha-5VM"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="map view" id="Uea-rK-IDM">
+                                <connections>
+                                    <segue destination="f9w-Gg-K7u" kind="presentation" id="GCe-Ha-5VM"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="refresh" id="51M-Qp-lrP">
+                                <connections>
+                                    <action selector="refreshAction:" destination="Y87-lB-UEz" id="kH0-Jw-oSu"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="refreshButton" destination="51M-Qp-lrP" id="YWM-j9-Q2x"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EUh-S4-eVK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1916" y="869"/>
+            <point key="canvasLocation" x="1924" y="869"/>
         </scene>
-        <!--Provider Map View Controller-->
+        <!--Providers-->
         <scene sceneID="GDV-dV-Ds9">
             <objects>
                 <viewController id="BF3-6O-KAb" customClass="ProviderMapViewController" customModule="myApp" sceneMemberID="viewController">
@@ -360,8 +368,8 @@
                             <constraint firstItem="yEz-jG-s9t" firstAttribute="bottom" secondItem="0SE-Ac-dna" secondAttribute="top" id="vap-GE-lJ7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Hqq-GN-rd0">
-                        <barButtonItem key="leftBarButtonItem" title="List view" id="D2d-pg-5Og">
+                    <navigationItem key="navigationItem" title="Providers" id="Hqq-GN-rd0">
+                        <barButtonItem key="rightBarButtonItem" title="List view" id="D2d-pg-5Og">
                             <connections>
                                 <action selector="listView:" destination="BF3-6O-KAb" id="U90-lD-ggx"/>
                             </connections>
