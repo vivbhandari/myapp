@@ -119,7 +119,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 print(error)
             case .cancelled:
                 print("User cancelled login.")
-            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+            case .success( _, _, _):
+//            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
                 self.getFBUserData()
             }
         }

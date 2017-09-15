@@ -21,7 +21,7 @@ class Helper {
     static func post(url: String, handler:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        var urlRequest = URLRequest(url: URL(string: url )!)
+        var urlRequest = URLRequest(url: URL(string: url)!)
         urlRequest.httpMethod = "POST"
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) in
@@ -34,11 +34,11 @@ class Helper {
         task.resume()
     }
 
-    static func get(url: String, authorization: Authorization, handler:@escaping ()->Void) {
+    static func get(url: String, access_token: String, handler:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        var urlRequest = URLRequest(url: URL(url)!)
-        urlRequest.addValue("Bearer " + authorization!.access_token, forHTTPHeaderField: "Authorization")
+        var urlRequest = URLRequest(url: URL(string: url)!)
+        urlRequest.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
             (data, response, error) in
             if error != nil {
