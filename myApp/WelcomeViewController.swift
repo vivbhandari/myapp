@@ -37,6 +37,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Handle the text field’s user input through delegate callbacks.
         usernameText.delegate = self
         passwordText.delegate = self
@@ -72,10 +73,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     private func loadAuthenticationToken(function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        let urlFormat = "http://localhost/myapp/user/authentication?username=%@&password=%@"
+        let urlFormat = "http://localhost:%@/myapp/user/authentication?username=%@&password=%@"
         let username = self.authorization!.username.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
         let password = self.authorization!.password.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
-        let url = URL(string: String(format: urlFormat, username, password) )!
+        let url = URL(string: String(format: urlFormat, MyVariables.port, username, password) )!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
@@ -120,7 +121,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             case .cancelled:
                 print("User cancelled login.")
             case .success( _, _, _):
-//            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+                //            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
                 self.getFBUserData()
             }
         }

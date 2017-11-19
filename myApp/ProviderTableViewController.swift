@@ -83,8 +83,8 @@ class ProviderTableViewController: UITableViewController {
     private func refreshAuthenticationToken(function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        let urlFormat = "http://localhost/myapp/user/authentication/refresh?username=%@&token=%@"
-        let url = URL(string: String(format: urlFormat, self.authorization!.username, self.authorization!.refresh_token) )!
+        let urlFormat = "http://localhost:%@/myapp/user/authentication/refresh?username=%@&token=%@"
+        let url = URL(string: String(format: urlFormat, MyVariables.port, self.authorization!.username, self.authorization!.refresh_token) )!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {
@@ -122,7 +122,7 @@ class ProviderTableViewController: UITableViewController {
     private func getProviders() {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        let url = URL(string: "http://localhost/myapp/myresource/providers")!
+        let url = URL(string: String(format: "http://localhost:%@/myapp/myresource/providers", MyVariables.port))!
         var urlRequest = URLRequest(url: url)
         urlRequest.addValue("Bearer " + self.authorization!.access_token, forHTTPHeaderField: "Authorization")
         let task = session.dataTask(with: urlRequest as URLRequest, completionHandler: {

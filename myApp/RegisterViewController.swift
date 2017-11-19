@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Stripe
 
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -32,6 +33,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     //MARK: Variables
     var authorization: Authorization? = nil
     let defaultImage = UIImage(named: "default")
+    var tokenId: String? = nil
 
     //MARK: Actions
     @IBAction func cancel(_ sender: UIButton) {
@@ -39,6 +41,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
 
     @IBAction func submit(_ sender: UIButton) {
+        self.getStripeTokenAndProcessSubmit()
+    }
+
+    func processSubmit(){
         var input: Dictionary<String, String> =  [String : String]()
         self.authorization = Authorization(username: self.emailId!.text!, password: self.password!.text!)
         input["name"] = self.name!.text!
@@ -49,6 +55,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             let imageData = UIImagePNGRepresentation(self.photo.image!)
             input["image"] = imageData!.base64EncodedString()
         }
+        input["tokenId"] = self.tokenId!
         self.register(dict: input, function: self.navigateToNextView)
     }
 
@@ -89,12 +96,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
     }
-    
+
     //MARK: Private methods
     private func register(dict: Dictionary<String, String>, function:@escaping ()->Void) {
         let config = URLSessionConfiguration.default // Session Configuration
         let session = URLSession(configuration: config) // Load configuration into Session
-        let url = URL(string: "http://localhost/myapp/user/register")!
+        let url = URL(string: String(format:"http://localhost:%@/myapp/user/register", MyVariables.port))!
         var urlRequest = URLRequest(url: url)
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpMethod = "POST"
@@ -115,6 +122,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 do {
                     let httpResponse = response as! HTTPURLResponse
                     print("statusCode=" + String(httpResponse.statusCode))
+                    let errorCodes = [409, 417]
                     if(httpResponse.statusCode == 201) {
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
                         {
@@ -126,7 +134,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                             function()
                         }
                     }
-                    else if(httpResponse.statusCode == 409) {
+                    else if(errorCodes.contains(httpResponse.statusCode)) {
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any]
                         {
                             print(json)
@@ -152,6 +160,32 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             providerTableViewController?.authorization = self.authorization
             self.present(providerTableNavigationController, animated: true, completion: nil)
         }
+    }
+
+
+    func getStripeTokenAndProcessSubmit() {
+        print("getStripeTokenAndProcessSubmit")
+        let stripCard = STPCard()
+        stripCard.number = "4242424242424242"
+        stripCard.cvc = "222"
+        stripCard.expMonth = 7
+        stripCard.expYear = 2019
+
+        do{
+            try stripCard.validateReturningError()
+        } catch let error {
+            print(error)
+        }
+
+        STPAPIClient.shared().createToken(with: stripCard, completion: { (token, error) -> Void in
+
+            if error != nil {
+                print(error!)
+            }
+            self.tokenId = token!.tokenId
+            print("tokenId=" + String(describing: self.tokenId))
+            self.processSubmit()
+        })
     }
 
     /*

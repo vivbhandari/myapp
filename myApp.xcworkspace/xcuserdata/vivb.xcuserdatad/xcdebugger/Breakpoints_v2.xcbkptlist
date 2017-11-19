@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "myApp/WelcomeViewController.swift"
-            timestampString = "527211505.630156"
+            timestampString = "532772863.467796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "loginButtonClicked()"
             landmarkType = "7">
          </BreakpointContent>

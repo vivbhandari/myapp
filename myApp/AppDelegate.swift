@@ -9,6 +9,11 @@
 import UIKit
 import CoreLocation
 import FBSDKLoginKit
+import Stripe
+
+struct MyVariables {
+    static var port = "80"
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()
+
+        // Stripe Configuration
+        Stripe.setDefaultPublishableKey("pk_test_LPE8QDJ6EL2XspMO0iaqT3Yj")
+
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
